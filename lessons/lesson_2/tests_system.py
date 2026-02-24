@@ -1,10 +1,6 @@
-def test_system():
+def test_login_negative_1():
     ...
 
 
-def test_system_2():
-    ...
-
-
-def tests_system_3():
+def test_login_negative_2():
     ...
