@@ -1,6 +1,9 @@
 def test_login_negative_1():
+def test_login_is_successful():
     ...
 
 
 def test_login_negative_2():
+    ...
+def test_login_is_successfull_2():
     ...
