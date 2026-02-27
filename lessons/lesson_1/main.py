@@ -11,6 +11,7 @@ locations_i_ve_been: set = {"Ukraine", "Russia", "Poland"} # набір знач
 empty = None
 my_biography: dict = {"name": my_name, "age": my_age, "friends": my_friends} # словник аналог JSON
 
+print(my_biography["friends"])
 
 print(
     29 == "29" # оператор порівняння
