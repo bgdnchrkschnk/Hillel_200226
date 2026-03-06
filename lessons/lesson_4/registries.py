@@ -98,6 +98,3 @@ log_message = "INFO: Invalid input data"
 
 is_error_message: bool = log_message.startswith("ERROR") # чи закінчується строчка на певний патерн
 print(is_error_message)
-
-
-
