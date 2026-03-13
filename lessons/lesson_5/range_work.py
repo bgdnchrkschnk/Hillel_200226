@@ -20,4 +20,3 @@ print(lc_not_evens)
 
 list_range_of_evens = [number for number in range(11) if number % 2 == 0]
 print(list_range_of_evens)
-
