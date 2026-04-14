@@ -1,5 +1,6 @@
 # import unittest # not best practice
 from unittest import TestCase, main
+from lessons.lesson_13.custom_logger_full import custom_logger_full
 from lessons.lesson_12.register_service import register_user, RegistrationServiceError
 
 
@@ -15,11 +16,21 @@ class TestRegistrationService(TestCase):
         test_password = "gugfHEWhf"
         test_email = "test_email@test.com"
         test_phone = "123456789"
+        custom_logger_full.info(f"User with params username={test_username}, password={test_password}, email={test_email}, phone={test_phone} is going to be registered")
         actual_response: dict = register_user(test_username, test_password, test_email, test_phone)
-        assert actual_response.get("status_code") == 200, f"It was expected 200 status_code, but got {actual_response.get('status_code')}"
-        assert actual_response.get("success") == True, f"It was expected True success, but got {actual_response.get('success')}"
-        assert actual_response.get("user") == {"username": test_username, "email": test_email, "phone": test_phone}, f"User data is not correct in response"
 
+
+        if actual_response.get("status_code") != 200:
+            custom_logger_full.error(f"It was expected 200 status_code, but got {actual_response.get('status_code')}")
+            raise AssertionError(f"It was expected 200 status_code, but got {actual_response.get('status_code')}")
+
+        if actual_response.get("success") == False:
+            custom_logger_full.error(f"It was expected True success, but got {actual_response.get('success')}")
+            raise AssertionError(f"It was expected True success, but got {actual_response.get('success')}")
+
+        if actual_response.get("user") != {"username": test_username, "email": test_email, "phone": test_phone}:
+            custom_logger_full.error(f"User data is not correct in response, expected {test_username}, {test_email}, {test_phone}, but got {actual_response.get('user')}")
+            raise AssertionError(f"User data is not correct in response, expected {test_username}, {test_email}, {test_phone}, but got {actual_response.get('user')}")
 
 class TestRegistrationServiceNegatives(TestCase):
     """
