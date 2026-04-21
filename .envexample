@@ -1,0 +1,23 @@
+# PAYMENT API DEV
+dev_admin_username = ''
+dev_admin_password = ''
+DEV_BASE_URL = ''
+dev_token = ''
+
+# PAYMENT API PROD
+prod_admin_username = ''
+prod_admin_password = ''
+PROD_BASE_URL = ''
+prod_token = ''
+
+# DATABASE DEV
+DB_USER = ''
+DB_PASSWORD = ''
+DB_HOST = ''
+DB_PORT =
+
+# DATABASE PROD
+DB_USER = ''
+DB_PASSWORD = ''
+DB_HOST = ''
+DB_PORT =
