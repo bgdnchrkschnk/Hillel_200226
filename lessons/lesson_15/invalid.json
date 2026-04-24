@@ -1,0 +1,13 @@
+{
+    "name": "Laura Arnold",
+    "email": "pamela85@example.org",
+    "age": 48,
+    "phone": "289.945.4512"
+    "address": "691 Middleton Park Suite 193",
+    "is_married": false,
+    "friends": [
+        "David Jenkins",
+        "Ellen Sullivan",
+        "Mark Roberts"
+    ]
+}
