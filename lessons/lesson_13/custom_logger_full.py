@@ -1,7 +1,7 @@
 import logging
 
 # Створення логера
-custom_logger_full = logging.getLogger("custom_logger_full")
+custom_logger_full = logging.getLogger("gorestapi_logger")
 
 # Налаштування рівня логування
 custom_logger_full.setLevel(logging.DEBUG)
@@ -9,7 +9,7 @@ custom_logger_full.setLevel(logging.DEBUG)
 # Створення обробника для виводу в stdout (консоль)
 console_handler = logging.StreamHandler()
 # Створення обробника для запису в файл
-file_handler = logging.FileHandler('custom_logger_full.log')
+file_handler = logging.FileHandler('test_logs.log')
 
 
 # Налаштування рівня логування для обробників
