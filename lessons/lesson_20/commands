@@ -1,0 +1,52 @@
+psql postgres
+
+
+\?
+Показати список усіх доступних команд
+\h
+Довідка по SQL-командам (наприклад \h SELECT)
+\l
+Список баз даних
+\c db_name
+Підключитись до бази db_name
+\dt
+Показати всі таблиці в поточній базі
+\d table_name
+Показати структуру таблиці
+\q
+Вийти з psql
+
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+CREATE TABLE products (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
+    product_id INT REFERENCES products(id)
+);
+
+
+-- Дані
+INSERT INTO users (name) VALUES
+('Maryna'), ('Kostya'), ('Ihor');
+
+INSERT INTO products (name) VALUES
+('Mobile phone'), ('Earphones'), ('Macbook');
+
+INSERT INTO orders (user_id, product_id) VALUES
+(1, 1),
+(1, 2),
+(2, 3);
+
+INSERT INTO reviews (user_id, product_id, rating, comment) VALUES
+(1, 1, 5, 'Дуже задоволена телефоном!'),
+(2, 3, 4, 'Ноутбук хороший, але шумний.'),
+(3, 2, 3, 'Навушники середні.');
