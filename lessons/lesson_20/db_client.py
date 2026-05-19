@@ -22,7 +22,6 @@ class DBClient:
     def cursor(self):
         return self.__cursor
 
-
     def __connect(self):
         try:
             self.__connection = psycopg2.connect(
