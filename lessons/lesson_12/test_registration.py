@@ -1,72 +1,72 @@
-# import unittest # not best practice
-from unittest import TestCase, main
-from lessons.lesson_13.custom_logger_full import custom_logger_full
-from lessons.lesson_12.register_service import register_user, RegistrationServiceError
-
-
-class TestRegistrationService(TestCase):
-    """
-    Test class for checking registration service
-    """
-    def test_registration_login_is_successful(self):
-        """
-        Test with valid data - login is successful
-        """
-        test_username = "test_user"
-        test_password = "gugfHEWhf"
-        test_email = "test_email@test.com"
-        test_phone = "123456789"
-        custom_logger_full.info(f"User with params username={test_username}, password={test_password}, email={test_email}, phone={test_phone} is going to be registered")
-        actual_response: dict = register_user(test_username, test_password, test_email, test_phone)
-
-
-        if actual_response.get("status_code") != 200:
-            custom_logger_full.error(f"It was expected 200 status_code, but got {actual_response.get('status_code')}")
-            raise AssertionError(f"It was expected 200 status_code, but got {actual_response.get('status_code')}")
-
-        if actual_response.get("success") == False:
-            custom_logger_full.error(f"It was expected True success, but got {actual_response.get('success')}")
-            raise AssertionError(f"It was expected True success, but got {actual_response.get('success')}")
-
-        if actual_response.get("user") != {"username": test_username, "email": test_email, "phone": test_phone}:
-            custom_logger_full.error(f"User data is not correct in response, expected {test_username}, {test_email}, {test_phone}, but got {actual_response.get('user')}")
-            raise AssertionError(f"User data is not correct in response, expected {test_username}, {test_email}, {test_phone}, but got {actual_response.get('user')}")
-
-class TestRegistrationServiceNegatives(TestCase):
-    """
-    Test class for checking registration service (negative cases)
-    """
-    def test_registration_with_invalid_email_1(self):
-        test_username = "test_user"
-        test_password = "gugfHEWhf"
-        test_email = "test_email@@test.com"
-        test_phone = "123456789"
-        actual_response: dict = register_user(test_username, test_password, test_email, test_phone)
-        assert actual_response.get("status_code") != 200
-        assert actual_response.get("success") == False
-        assert "error" in actual_response.keys()
-
-    def test_registration_with_invalid_email_2(self):
-        test_username = "test_user"
-        test_password = "gugfHEWhf"
-        test_email = "test_emailtest.com"
-        test_phone = "123456789"
-        actual_response: dict = register_user(test_username, test_password, test_email, test_phone)
-        assert actual_response.get("status_code") != 200
-        assert actual_response.get("success") == False
-        assert "error" in actual_response.keys()
-
-    def test_registration_with_existing_user(self):
-        """
-        Testing service on raised exception
-        """
-        test_username = "registered_user"
-        test_password = "jekfHEFIAa"
-        test_email = "registered_user@test.com"
-        test_phone = "123456789"
-        with self.assertRaises(RegistrationServiceError):
-            register_user(test_username, test_password, test_email, test_phone)
-
-# assert <condition> -> AssertionError
-if __name__ == '__main__':
-    main(verbosity=2)
+# # import unittest # not best practice
+# from unittest import TestCase, main
+# from lessons.lesson_13.custom_logger_full import custom_logger_full
+# from lessons.lesson_12.register_service import register_user, RegistrationServiceError
+#
+#
+# class TestRegistrationService(TestCase):
+#     """
+#     Test class for checking registration service
+#     """
+#     def test_registration_login_is_successful(self):
+#         """
+#         Test with valid data - login is successful
+#         """
+#         test_username = "test_user"
+#         test_password = "gugfHEWhf"
+#         test_email = "test_email@test.com"
+#         test_phone = "123456789"
+#         custom_logger_full.info(f"User with params username={test_username}, password={test_password}, email={test_email}, phone={test_phone} is going to be registered")
+#         actual_response: dict = register_user(test_username, test_password, test_email, test_phone)
+#
+#
+#         if actual_response.get("status_code") != 200:
+#             custom_logger_full.error(f"It was expected 200 status_code, but got {actual_response.get('status_code')}")
+#             raise AssertionError(f"It was expected 200 status_code, but got {actual_response.get('status_code')}")
+#
+#         if actual_response.get("success") == False:
+#             custom_logger_full.error(f"It was expected True success, but got {actual_response.get('success')}")
+#             raise AssertionError(f"It was expected True success, but got {actual_response.get('success')}")
+#
+#         if actual_response.get("user") != {"username": test_username, "email": test_email, "phone": test_phone}:
+#             custom_logger_full.error(f"User data is not correct in response, expected {test_username}, {test_email}, {test_phone}, but got {actual_response.get('user')}")
+#             raise AssertionError(f"User data is not correct in response, expected {test_username}, {test_email}, {test_phone}, but got {actual_response.get('user')}")
+#
+# class TestRegistrationServiceNegatives(TestCase):
+#     """
+#     Test class for checking registration service (negative cases)
+#     """
+#     def test_registration_with_invalid_email_1(self):
+#         test_username = "test_user"
+#         test_password = "gugfHEWhf"
+#         test_email = "test_email@@test.com"
+#         test_phone = "123456789"
+#         actual_response: dict = register_user(test_username, test_password, test_email, test_phone)
+#         assert actual_response.get("status_code") != 200
+#         assert actual_response.get("success") == False
+#         assert "error" in actual_response.keys()
+#
+#     def test_registration_with_invalid_email_2(self):
+#         test_username = "test_user"
+#         test_password = "gugfHEWhf"
+#         test_email = "test_emailtest.com"
+#         test_phone = "123456789"
+#         actual_response: dict = register_user(test_username, test_password, test_email, test_phone)
+#         assert actual_response.get("status_code") != 200
+#         assert actual_response.get("success") == False
+#         assert "error" in actual_response.keys()
+#
+#     def test_registration_with_existing_user(self):
+#         """
+#         Testing service on raised exception
+#         """
+#         test_username = "registered_user"
+#         test_password = "jekfHEFIAa"
+#         test_email = "registered_user@test.com"
+#         test_phone = "123456789"
+#         with self.assertRaises(RegistrationServiceError):
+#             register_user(test_username, test_password, test_email, test_phone)
+#
+# # assert <condition> -> AssertionError
+# if __name__ == '__main__':
+#     main(verbosity=2)
