@@ -52,6 +52,9 @@ class DBClient:
         self.__cursor.close()
         self.__connection.close()
 
+    def clear_test_data_for_today(self):
+        self.mutation("DELETE FROM users WHERE created_at = NOW()")
+
 
 if __name__ == "__main__":
     db_client = DBClient()
