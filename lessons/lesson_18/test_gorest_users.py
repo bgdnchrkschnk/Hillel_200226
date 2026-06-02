@@ -3,7 +3,7 @@
 # import requests
 # from dotenv import load_dotenv
 #
-# from lessons.lesson_18.user_provider import get_test_user
+# # from lessons.lesson_18.user_provider import get_test_user
 # from lessons.lesson_18.gorestapi.users_api_client import UsersApiClient
 #
 # load_dotenv()
@@ -11,11 +11,12 @@
 # class TestGorestUsers(unittest.TestCase):
 #
 #     API_TOKEN = os.getenv("API_TOKEN")
+#     ENDPOINT = os.getenv("BASE_URL") + "/users"
 #
-#     def test_user_creation(self):
+#     def test_user_creation(self, logging_test_precondition):
 #         headers = {
 #             "Content-Type": "application/json",
-#             "Authorization": f"Bearer {self.api_token}"
+#             "Authorization": f"Bearer {self.API_TOKEN}"
 #         }
 #
 #
@@ -33,4 +34,6 @@
 #         test_user_data: dict = get_test_user()
 #
 #         response = user_api_client.create_user(test_user=test_user_data)
+#         assert response.ok == True, f"Expected status_code 201, but got {response.status_code}"
+#
 #         ...

@@ -1,4 +1,8 @@
+import logging
+
 import pytest
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
 
 @pytest.mark.string_operations
 @pytest.mark.smoke
@@ -7,7 +11,7 @@ class TestStringsSuite:
     """
     Test suite related to strings functionalities (only positive tests)
     """
-    def test_upper(self):
+    def test_upper(self, logging_test_precondition):
         """
         Test verifies that the string is converted to upper case
         """
