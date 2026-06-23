@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+      POSTGRES_DB: test_db
+    ports:
+      - "5433:5432"
+
+  app:
+    build:
+      context: ./tests/docker
+      dockerfile: Dockerfile
+    depends_on:
+      - db
