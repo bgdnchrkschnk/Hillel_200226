@@ -11,7 +11,7 @@ class TestStringsSuite:
     """
     Test suite related to strings functionalities (only positive tests)
     """
-    def test_upper(self, logging_test_precondition):
+    def test_upper(self):
         """
         Test verifies that the string is converted to upper case
         """
@@ -24,7 +24,7 @@ class TestStringsSuite:
         Test verifies that the string is converted to lower case
         """
         input_data: str = "HELLO"
-        assert input_data.lower() != "hello"
+        assert input_data.lower() == "hello"
 
 @pytest.mark.string_operations
 @pytest.mark.regression

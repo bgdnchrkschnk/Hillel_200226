@@ -1,6 +1,7 @@
 import os
 import pathlib
 
+import allure
 from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright, Page
 
@@ -15,10 +16,9 @@ from page_objects.sausedemo.LoginPage import LoginPage
 @pytest.fixture
 def clear_page():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)  # headless - запуск без візуалу
+        browser = p.chromium.launch(headless=True)  # headless - запуск без візуалу
         context = browser.new_context()
         page: Page = context.new_page()
-        page.set_default_timeout(5000)
         yield page
         context.close()
         browser.close()
@@ -35,7 +35,7 @@ def login_page(clear_page) -> LoginPage:
 def products_page_logged_standard_user(login_page: LoginPage) -> ProductsPage:
     products_page: ProductsPage = login_page.login(
         username=os.getenv("SAUSEDEMO_STANDART_USERNAME"),
-        password=os.getenv("SAUSEDEMO_PASSWORD"), delay=50
+        password=os.getenv("SAUSEDEMO_PASSWORD"), delay=20
     )
     return products_page
 
@@ -48,16 +48,22 @@ def trace_per_test(request, clear_page):
     trace_path = pathlib.Path(__file__).parent / 'pw_traces'
     trace_path.mkdir(exist_ok=True)
 
-    # старт трасування
     context.tracing.start(
         screenshots=True,
         snapshots=True,
         sources=True
     )
 
-    yield  # тест виконується тут
+    yield
 
-    # stop tracing і збереження після тесту
     test_name = request.node.name
-    context.tracing.stop(path=str(trace_path / f"{test_name}.zip"))
+    trace_file = trace_path / f"{test_name}.zip"
+    context.tracing.stop(path=str(trace_file))
+
+    allure.attach.file(
+        str(trace_file),
+        name="playwright-trace",
+        attachment_type="application/zip",
+        extension="zip"
+    )
 

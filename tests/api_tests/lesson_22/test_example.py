@@ -12,7 +12,7 @@ def get_os() -> str:
     """
     return sys.platform
 
-
+@pytest.mark.regression
 class TestExample:
 
     @pytest.mark.skipif(datetime.now().day == 27, reason="Test is not working on 26th")

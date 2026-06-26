@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Locator, Page, expect
 
 
@@ -16,11 +17,12 @@ class CartForm:
         text: str = cart_form_index.text_content()
         return int(text)
 
+    @allure.step("Open cart")
     def open(self):
         self.page.locator(self.__class__.CART_LINK).click()
         expect(self.page.locator(self.__class__.CART_TITLE)).to_be_visible()
 
-    def count_items_in_cart(self) -> int:
+    def _count_items_in_cart(self) -> int:
         all_cart_items: list[Locator] = self.page.locator(".cart_item").all()
         return len(all_cart_items)
 

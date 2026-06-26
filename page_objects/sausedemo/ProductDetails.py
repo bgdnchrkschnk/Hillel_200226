@@ -1,5 +1,7 @@
+import logging
 import os
 
+import allure
 from playwright.sync_api import Page, Locator, expect
 from dotenv import load_dotenv
 load_dotenv()
@@ -8,7 +10,7 @@ load_dotenv()
 class ProductDetails:
 
     ENDPOINT = "/inventory-item.html?id="
-    BACK_TO_PRODUCTS_PAGE_BUTTON = "#back-to-cart"
+    BACK_TO_PRODUCTS_PAGE_BUTTON = "#back-to-products"
     ADD_TO_CART_BUTTON = "#add-to-cart"
 
     def __init__(self, page: Page):
@@ -23,9 +25,10 @@ class ProductDetails:
     def add_to_cart_button(self) -> Locator:
         return self.page.locator(self.__class__.ADD_TO_CART_BUTTON)
 
-
+    @allure.step("Verify that product details page is really opened")
     def is_page_opened(self) -> bool:
         try:
+            logging.info(self.url)
             assert self.url in self.page.url  # .../inventory-item.html?id= in ... .../inventory-item.html?id=0
             expect(self.back_to_products_page_button).to_be_visible()
         except Exception:
