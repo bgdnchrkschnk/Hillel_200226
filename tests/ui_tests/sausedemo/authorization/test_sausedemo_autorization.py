@@ -27,7 +27,6 @@ class TestSauseDemoPositiveAuthorization:
             username=os.getenv("SAUSEDEMO_STANDART_USERNAME"),
             password=os.getenv("SAUSEDEMO_PASSWORD"), delay=20
         )
-        allure.attach(products_page.page.screenshot(), name="Products page screenshot", attachment_type=allure.attachment_type.)
         assert products_page.is_logged_in()
 
 @pytest.mark.regression
