@@ -4,14 +4,16 @@ import pytest
 import allure
 from dotenv import load_dotenv
 
-from page_objects.sausedemo.LoginPage import LoginPage
-from page_objects.sausedemo.ProductsPage import ProductsPage
+from core.page_objects.sausedemo.LoginPage import LoginPage
+from core.page_objects.sausedemo.ProductsPage import ProductsPage
+from tests.base_sausedemo import SauseDemoTestSuite
 
 load_dotenv()
 
+@pytest.mark.sausedemo
 @pytest.mark.regression
 @allure.feature("Sausedemo Authorization")
-class TestSauseDemoPositiveAuthorization:
+class TestSauseDemoPositiveAuthorization(SauseDemoTestSuite):
     """
     Test suite related to authorization functionalities
     """

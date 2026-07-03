@@ -4,10 +4,10 @@ from random import randint
 import allure
 import pytest
 
-from page_objects.sausedemo.ProductDetails import ProductDetails
-from page_objects.sausedemo.ProductsPage import ProductsPage
+from core.page_objects.sausedemo.ProductDetails import ProductDetails
+from core.page_objects.sausedemo.ProductsPage import ProductsPage
 
-
+@pytest.mark.sausedemo
 @pytest.mark.regression
 @allure.feature("Sausedemo Products")
 class TestSauseDemoPositiveProducts:

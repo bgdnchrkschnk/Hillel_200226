@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+@pytest.mark.sausedemo
 @pytest.mark.regression
 @allure.feature("Sausedemo Cart")
 class TestSauceDemoPositiveCart:
