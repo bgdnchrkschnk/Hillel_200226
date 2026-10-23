@@ -81,3 +81,14 @@ res= enumerate(list_of_names)
 print(list(res))
 
 
+def build_sql_query(table, **kwargs):
+    query = f"SELECT * FROM {table}"
+    if kwargs:
+        for key, value in kwargs.items():
+            query += f" WHERE {key} = {value}"
+    return query
+
+
+print(
+    build_sql_query(table="transactions", status=555)
+)
