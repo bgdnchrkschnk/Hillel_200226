@@ -17,19 +17,17 @@ CRITICAL: Timeout occurred
 WARNING: High memory usage
 """
 
-first_critical_index = log_data.find("CRITICAL") # -> index
-error_message_index_start = first_critical_index + 10
+first_critical = log_data.find("CRITICAL:")
+second_critical = log_data.find("CRITICAL:", first_critical + 1)
 
-second_critical_index = log_data.find("CRITICAL", first_critical_index +1) # - (text_fragment, start_from)
+start_first = first_critical + len("CRITICAL: ")
+start_second = second_critical + len("CRITICAL: ")
 
+end_first = log_data.find("\n", start_first)
+end_second = log_data.find("\n", start_second)
 
-print(second_critical_index)
-
-print(
-    log_data.find("ERROR")
-)
-
-
+print(log_data[start_first:end_first])
+print(log_data[start_second:end_second])
 
 # ----------------------------------
 

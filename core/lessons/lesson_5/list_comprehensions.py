@@ -1,6 +1,4 @@
 # list comprehension
-from platform import python_version
-from traceback import print_exc
 
 numbers_range = range(1, 11)
 list_of_numbers_range = list(numbers_range)

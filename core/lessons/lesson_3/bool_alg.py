@@ -27,13 +27,16 @@ email_of_user = None
 #     print("User has email")
 
 
-user_email_v1 = None
-user_email_v2 = ""
-user_email_v3 = "hehwuh@asd.com"
+username = None
+user_email = "hehwuh@asd.com"
+user_password = ""
 
-if user_email_v1 is None or user_email_v1 == "":
-    print("User has no email")
+# Логіка реєстрації
+if username and user_email and user_password:
+    print("✅ Користувач зареєстрований")
+elif username is None or user_password == "":
+    print("⚠️ Реєстрація неможлива: відсутні обов'язкові дані")
+else:
+    print("ℹ️ Дані частково заповнені, потрібна перевірка")
 
-if (user_email_v3 is not None) and (user_email_v3 != ""):
-    print("User has email")
 

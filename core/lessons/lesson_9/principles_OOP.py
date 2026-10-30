@@ -53,15 +53,29 @@ cat_1 = Cat("Max", "2022-01-01")
 
 
 # POLIMORPHYSM
+"""
+**Поліморфізм** — це можливість використовувати **одне й те саме ім'я методу (або інтерфейс)** для об'єктів різних типів, отримуючи **різну поведінку** залежно від конкретного класу об'єкта.
+"""
 
 my_animals = [dog_1, cat_1, mini_dog_1]
 
 # for animal in my_animals:
 #     animal.move()
 
+# Одинаковий виклик .move() для різних об'єктів
+animals = [Cat(), Dog(), MiniDog(), Animal()]
 
+for animal in animals:
+    animal.move()
 
+# Функції все одно, який тип об'єкта сюди передали —
+# головне, що у нього є метод .move()
+def make_it_move(obj):
+    obj.move()
 
+make_it_move(Cat())      # Cat Moving
+make_it_move(Dog())      # Dog Moving
+make_it_move(MiniDog())  # Mini Dog Moving
 # Incapsulation
 
 
