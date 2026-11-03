@@ -89,3 +89,54 @@ hybrid = HybridTransport(land_wheels=4,
 print(HybridTransport.__mro__)
 hybrid.drive()
 hybrid.honk()
+
+
+class Artist:
+    def __init__(self, name, **kwargs):
+        super().__init__(**kwargs)
+        self.name = name
+
+    def perform(self):
+        print(f"{self.name} творить мистецтво.")
+
+
+class Singer(Artist):
+    def __init__(self, voice_range, **kwargs):
+        super().__init__(**kwargs)
+        self.voice_range = voice_range
+
+    def perform(self):
+        super().perform()
+        print(f"Співає в діапазоні: {self.voice_range}.")
+
+
+class Guitarist(Artist):
+    def __init__(self, guitar_model, **kwargs):
+        super().__init__(**kwargs)
+        self.guitar_model = guitar_model
+
+    def perform(self):
+        super().perform()
+        print(f"Грає на гітарі: {self.guitar_model}.")
+
+
+# Множинне успадкування: Музикант є і співаком, і гітаристом
+class RockStar(Singer, Guitarist):
+    def __init__(self, name, voice_range, guitar_model):
+        # **kwargs дозволяє передавати параметри через весь ланцюжок MRO
+        super().__init__(name=name, voice_range=voice_range, guitar_model=guitar_model)
+
+    def perform(self):
+        print("=== Початок шоу ===")
+        super().perform()
+
+
+# --- Використання ---
+
+star = RockStar(
+    name="Джиммі",
+    voice_range="Тенор",
+    guitar_model="Fender Stratocaster"
+)
+
+star.perform()

@@ -110,7 +110,34 @@ print(
 bgdn.__create_start_balance()
 
 
+class BankAccount:
+    def __init__(self, owner, account_type, balance, pin):
+        # Public: відкрита інформація
+        self.owner = owner
 
+        # Protected (_): внутрішня логіка, доступна класу та його спадкоємцям
+        self._account_type = account_type
 
+        # Private (__): захищено від випадкового перезапису (Name Mangling)
+        self.__balance = balance
+        self.__pin = pin
+
+        # Публічний метод для безпечної роботи з приватними даними
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+            print(f"Поповнено на {amount}. Поточний баланс: {self.__balance}")
+
+    def withdraw(self, amount, pin):
+        if pin != self.__pin:
+            print("Помилка: Невірний PIN-код!")
+            return
+        if amount > self.__balance:
+            print("Помилка: Недостатньо коштів!")
+            return
+
+        self.__balance -= amount
+        print(f"Знято {amount}. Залишок: {self.__balance}")
 
 

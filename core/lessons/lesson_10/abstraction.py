@@ -41,54 +41,83 @@ bird.sleep()
 
 
 #################################
+import sqlite3
+import psycopg2  # type: ignore
+from abc import ABC, abstractmethod
+from decimal import Decimal
 
-class AbstractDBClient(ABC):
 
-    @abstractmethod
-    def select(self, query):
-        ...
-
-    @abstractmethod
-    def mutation(self, query):
-        ...
+# 1. Абстрактний клас
+class AbstractAQADBClient(ABC):
 
     @abstractmethod
-    def health_check(self):
-        ...
+    def seed_user(self, username: str, initial_balance: Decimal) -> str:
+        """SETUP (Arrange): Створює тестового користувача та повертає його user_id."""
+        pass
 
-class SQLClient(AbstractDBClient):
+    @abstractmethod
+    def assert_user_balance(self, user_id: str, expected_balance: Decimal) -> bool:
+        """VALIDATION (Assert): Перевіряє остаточний баланс користувача в БД."""
+        pass
 
-    def select(self, query):
-        # sqlite.cursor.execute(query)
-        # return sqlite.cursor.fetchall()
-
-    def mutation(self, query):
-        # sqlite.cursor.execute(query)
-
-    def health_check(self):
-        self.select("SELECT * FROM users")
-
-
-class PostgresClient(AbstractDBClient):
-
-    def select(self, query):
-
-        # sqlite.cursor.execute(query)
-        # return sqlite.cursor.fetchall()
-
-    def mutation(self, query):
-
-        # sqlite.cursor.execute(query)
-
-    def health_check(self):
-        self.select("SELECT * FROM users")
+    @abstractmethod
+    def reset_database(self) -> None:
+        """CLEANUP (Teardown): Повністю очищує тестові таблиці між тестами."""
+        pass
 
 
-class MysqlClient(AbstractDBClient):
-    ...
+# 2. SQLite Реалізація (Local / Fast CI)
+class SQLiteAQADBClient(AbstractAQADBClient):
 
-postgres_client = PostgresClient()
-postgres_client.select(query="SELECT * FROM users")
+    def __init__(self, db_path: str = ":memory:"):
+        self.conn = sqlite3.connect(db_path)
 
-mysql_client = MysqlClient()
-mysql_client.select(query="SELECT * FROM users")
+    def seed_user(self, username: str, initial_balance: Decimal) -> str:
+        cursor = self.conn.cursor()
+        cursor.execute(
+            "INSERT INTO users (username, balance) VALUES (?, ?)",
+            (username, float(initial_balance))
+        )
+        self.conn.commit()
+        return str(cursor.lastrowid)
+
+    def assert_user_balance(self, user_id: str, expected_balance: Decimal) -> bool:
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT balance FROM users WHERE id = ?", (user_id,))
+        row = cursor.fetchone()
+        actual_balance = Decimal(str(row[0])) if row else Decimal("0")
+        return actual_balance == expected_balance
+
+    def reset_database(self) -> None:
+        cursor = self.conn.cursor()
+        cursor.execute("DELETE FROM users;")
+        self.conn.commit()
+
+
+# 3. Postgres Реалізація (Integration CI / Staging)
+class PostgresAQADBClient(AbstractAQADBClient):
+
+    def __init__(self, dsn: str):
+        self.conn = psycopg2.connect(dsn)
+
+    def seed_user(self, username: str, initial_balance: Decimal) -> str:
+        with self.conn.cursor() as cursor:
+            cursor.execute(
+                "INSERT INTO users (username, balance) VALUES (%s, %s) RETURNING id;",
+                (username, initial_balance)
+            )
+            user_id = cursor.fetchone()[0]
+            self.conn.commit()
+            return str(user_id)
+
+    def assert_user_balance(self, user_id: str, expected_balance: Decimal) -> bool:
+        with self.conn.cursor() as cursor:
+            cursor.execute("SELECT balance FROM users WHERE id = %s;", (user_id,))
+            row = cursor.fetchone()
+            actual_balance = Decimal(str(row[0])) if row else Decimal("0")
+            return actual_balance == expected_balance
+
+    def reset_database(self) -> None:
+        with self.conn.cursor() as cursor:
+            cursor.execute("TRUNCATE TABLE users CASCADE;")
+            self.conn.commit()

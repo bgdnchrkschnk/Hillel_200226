@@ -7,10 +7,10 @@ def outer():
     string = "Nonlocal"
 
     def inner():
-
+        global string
         string = "Local"
 
-    print(string)
     inner()
 
 outer()
+print(string)
